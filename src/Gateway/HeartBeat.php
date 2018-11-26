@@ -3,7 +3,7 @@ namespace p7g\Discord\Gateway;
 
 use Psr\Log;
 
-final class HeartBeat implements Log\LoggerAwareInterface {
+final class Heartbeat implements Log\LoggerAwareInterface {
   use Log\LoggerAwareTrait;
 
   /** @var GatewayConnection $connection */

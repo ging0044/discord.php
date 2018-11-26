@@ -4,7 +4,7 @@ namespace p7g\Discord\Rest;
 use Amp\Artax;
 use Amp\Promise;
 use Psr\Log;
-use p7g\Discord\Token\IToken;
+use p7g\Discord\Token\TokenInterface;
 
 class Client implements Log\LoggerAwareInterface {
   use Log\LoggerAwareTrait;
@@ -22,9 +22,12 @@ class Client implements Log\LoggerAwareInterface {
   /** @var array $headers */
   private $headers;
 
-  public function __construct(IToken $token, array $options = []) {
+  /** @var array $options */
+  private $options = self::DEFAULT_OPTIONS;
+
+  public function __construct(TokenInterface $token, array $options = []) {
     $this->client = new Artax\DefaultClient();
-    $this->options = array_replace_recursive(self::DEFAULT_OPTIONS, $options);
+    $this->options = array_replace_recursive($this->options, $options);
 
     $this->headers = [
       'Authorization' => (string) $token,

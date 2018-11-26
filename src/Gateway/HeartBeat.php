@@ -16,7 +16,7 @@ final class HeartBeat implements Log\LoggerAwareInterface {
   private $lastAck;
 
   /** @var bool $acknowledged */
-  private $acknowledged;
+  private $acknowledged = true;
 
   /** @var int $interval */
   private $interval;
@@ -38,7 +38,6 @@ final class HeartBeat implements Log\LoggerAwareInterface {
 
   public function __construct(GatewayConnection $connection) {
     $this->connection = $connection;
-    $this->acknowledged = true;
     $this->logger = new Log\NullLogger();
 
     $this->handleHello = \Closure::fromCallable([$this, 'handleHello']);

@@ -34,10 +34,10 @@ implements
   private $gateway;
 
   /** @var array $options */
-  private $options;
+  private $options = self::DEFAULT_OPTIONS;
 
   public function __construct(array $options = []) {
-    $this->options = array_replace_recursive(self::DEFAULT_OPTIONS, $options);
+    $this->options = array_replace_recursive($this->options, $options);
 
     $this->logger = new Log\NullLogger();
 

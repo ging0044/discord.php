@@ -27,7 +27,7 @@ implements
     'version' => 6, // FIXME: this should be somewhere central
   ];
 
-  /** @var Websocket\Connection $connection */
+  /** @var ?Websocket\Connection $connection */
   private $connection;
 
   /** @var ?object $gateway */
@@ -87,7 +87,7 @@ implements
     }
   }
 
-  public function disconnect(int $code, string $message) {
+  public function disconnect(int $code, string $message): void {
     $this->connection->close($code, $message);
   }
 
@@ -113,7 +113,7 @@ implements
     })->bindTo($this, self::class));
   }
 
-  private function receiveMessage() {
+  private function receiveMessage(): Promise {
     return Amp\call((function () {
       $message = yield $this->connection->receive();
       $body = yield $message->buffer();

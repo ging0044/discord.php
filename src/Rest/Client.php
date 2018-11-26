@@ -6,7 +6,7 @@ use Amp\Promise;
 use Psr\Log;
 use p7g\Discord\Token\IToken;
 
-class Rest implements Log\LoggerAwareInterface {
+class Client implements Log\LoggerAwareInterface {
   use Log\LoggerAwareTrait;
 
   public const DEFAULT_OPTIONS = [
@@ -15,9 +15,6 @@ class Rest implements Log\LoggerAwareInterface {
 
   /** @const string DISCORD_API_URL */
   public const DISCORD_API_URL = 'https://discordapp.com/api';
-
-  public const GATEWAY = '/gateway';
-  public const GATEWAY_BOT = '/gateway/bot';
 
   /** @var Artax\Client $client */
   private $client;

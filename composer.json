@@ -1,0 +1,23 @@
+{
+    "autoload": {
+        "psr-4": {
+            "p7g\\Discord\\": "src"
+        }
+    },
+    "require": {
+        "amphp/amp": "^2.0",
+        "amphp/artax": "^3.0",
+        "amphp/websocket": "^0.2.2",
+        "amphp/byte-stream": "^1.5",
+        "symfony/dotenv": "^4.1",
+        "ext-json": "*",
+        "symfony/options-resolver": "^4.1",
+        "psr/log": "^1.1",
+        "devco/event-emitter": "^1.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "nunomaduro/collision": "^2.1",
+        "monolog/monolog": "^1.24"
+    }
+}

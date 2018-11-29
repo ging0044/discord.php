@@ -27,11 +27,17 @@ implements
     'version' => 6, // FIXME: this should be somewhere central
   ];
 
+  /** @var ConnectorInterface $connector */
+  private $connector;
+
   /** @var ?Websocket\Connection $connection */
   private $connection;
 
   /** @var ?object $gateway */
   private $gateway;
+
+  /** @var bool $running */
+  private $running = false;
 
   /** @var array $options */
   private $options = self::DEFAULT_OPTIONS;
@@ -65,26 +71,19 @@ implements
     return $this->connection->send($encoded);
   }
 
-  public function connect($gateway): Promise {
-    $this->gateway = $gateway;
-    return Amp\call(\Closure::fromCallable([$this, 'doConnect']));
-  }
-
-  private function doConnect() {
-    $url = $this->gateway->url;
-    $version = $this->options['version'];
-    $encoding = $this->options['encoding'];
-    $url = "$url?v=$version&encoding=$encoding";
-
-    $this->logger->debug("Connecting to gateway at url: $url");
-
+  private function connect() {
+    $this->logger->debug('Getting connection');
     try {
-      $this->connection = yield Websocket\connect($url);
+      $this->connection = yield $this->connector->connect();
     }
-    catch (\Exception $e) {
-      $this->logger->emergency('Could not connect to websocket', ['e' => $e]);
+    catch (\Exception $e) { // TODO: keep trying
+      $this->logger->emergency('Failed to get connection', ['e' => $e]);
       $this->emit('error', $e);
     }
+  }
+
+  public function setConnector(ConnectorInterface $connector): void {
+    $this->connector = $connector;
   }
 
   public function disconnect(int $code, string $message): void {
@@ -92,15 +91,17 @@ implements
   }
 
   public function reconnect(): Promise {
-    return Amp\call(\Closure::fromCallable([$this, 'doConnect']));
+    return Amp\call(\Closure::fromCallable([$this, 'connect']));
   }
 
   public function start(): void {
-    Amp\Loop::defer((function () {
-      $this->logger->debug('Started');
+    $this->running = true;
+    Amp\Loop::defer(function () {
+      yield Amp\call(\Closure::fromCallable([$this, 'connect']));
 
+      $this->logger->debug('Started');
       try {
-        while ($message = yield $this->receiveMessage()) {
+        while ($message = yield $this->receiveMessage() && $this->running) {
           $this->emit($message->op, $message);
         }
       }
@@ -110,17 +111,21 @@ implements
           . $e->getMessage()
         );
       }
-    })->bindTo($this, self::class));
+    });
+  }
+
+  public function stop() {
+    $this->running = false;
   }
 
   private function receiveMessage(): Promise {
-    return Amp\call((function () {
+    return Amp\call(function () {
       $message = yield $this->connection->receive();
       $body = yield $message->buffer();
 
       $this->logger->debug("Received: $body");
 
       return \json_decode($body);
-    })->bindTo($this, self::class));
+    });
   }
 }

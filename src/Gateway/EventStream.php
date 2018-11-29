@@ -9,7 +9,7 @@ class EventStream implements Log\LoggerAwareInterface, EventEmitterInterface {
   use Log\LoggerAwareTrait;
   use EventEmitter;
 
-  public function __construct(GatewayConnection $connection) {
+  public function __construct(EventEmitterInterface $connection) {
     $connection->on(
       OpCode::EVENT,
       \Closure::fromCallable([$this, 'readEvent'])

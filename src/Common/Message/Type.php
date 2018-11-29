@@ -1,7 +1,7 @@
 <?php
 namespace p7g\Discord\Common\Message;
 
-final class MessageType {
+final class Type {
   public const DEFAULT = 0;
   public const RECIPIENT_ADD = 1;
   public const RECIPIENT_REMOVE = 2;

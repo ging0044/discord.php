@@ -3,7 +3,7 @@ namespace p7g\Discord\Common\Message;
 
 use Amp\Struct;
 
-class MessageApplication {
+class Application {
   use Struct;
 
   /** @var string */

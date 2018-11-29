@@ -3,7 +3,7 @@ namespace p7g\Discord\Common\Message;
 
 use Amp\Struct;
 
-class MessageActivity {
+class Activity {
   use Struct;
 
   /** @var int */

@@ -1,7 +1,7 @@
 <?php
 namespace p7g\Discord\Common\Channel;
 
-final class ChannelType {
+final class Type {
   public const GUILD_TEXT = 0;
   public const DM = 1;
   public const GUILD_VOICE = 2;

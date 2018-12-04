@@ -25,6 +25,25 @@ class Client implements Log\LoggerAwareInterface {
   /** @var array $options */
   private $options = self::DEFAULT_OPTIONS;
 
+  /** @var string $discordphpVersion */
+  private static $discordphpVersion;
+
+  /** @var string $discordphpHomepage */
+  private static $discordphpHomepage;
+
+  public static function getUserAgent(): string {
+    if (empty(self::$discordphpHomepage) || empty(self::$discordphpVersion)) {
+      $composer = json_decode(
+        file_get_contents(__DIR__ . '/../../composer.json')
+      );
+      self::$discordphpVersion = $composer->version;
+      self::$discordphpHomepage = $composer->homepage;
+    }
+    $url = self::$discordphpHomepage;
+    $version = self::$discordphpVersion;
+    return "DiscordBot ($url, $version)";
+  }
+
   public static function qualifyEndpoint(
     int $version,
     string $endpoint
@@ -38,6 +57,7 @@ class Client implements Log\LoggerAwareInterface {
 
     $this->headers = [
       'Authorization' => (string) $token,
+      'User-Agent' => self::getUserAgent(),
     ];
 
     $this->logger = new Log\NullLogger();

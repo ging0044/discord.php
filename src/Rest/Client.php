@@ -29,7 +29,7 @@ class Client implements Log\LoggerAwareInterface {
     int $version,
     string $endpoint
   ): string {
-    return self::DISCORD_API_URL . "/v$version/$url";
+    return self::DISCORD_API_URL . "/v$version/$endpoint";
   }
 
   public function __construct(TokenInterface $token, array $options = []) {
@@ -43,7 +43,11 @@ class Client implements Log\LoggerAwareInterface {
     $this->logger = new Log\NullLogger();
   }
 
-  public function request(string $method, string $url, $data = null): Promise {
+  public function request(
+    string $method,
+    string $endpoint,
+    $data = null
+  ): Promise {
     $url = self::qualifyEndpoint($this->options['version'], $endpoint);
     $request = (new Artax\Request($url))
       ->withHeaders($this->headers)

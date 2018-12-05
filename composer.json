@@ -8,7 +8,10 @@
     "autoload-dev": {
         "psr-4": {
             "p7g\\Discord\\Test\\": "test"
-        }
+        },
+        "files": [
+            "src/Utility/cast.php"
+        ]
     },
     "minimum-stability": "dev",
     "require": {

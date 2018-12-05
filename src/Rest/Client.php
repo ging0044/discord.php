@@ -73,8 +73,8 @@ class Client implements Log\LoggerAwareInterface {
       ->withHeaders($this->headers)
       ->withMethod($method);
 
-    $body = json_encode($data);
     if ($data !== null) {
+      $body = json_encode($data);
       $request->withBody($body);
     }
 

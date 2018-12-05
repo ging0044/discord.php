@@ -59,6 +59,7 @@ class Client implements Log\LoggerAwareInterface {
     $this->headers = [
       'Authorization' => (string) $token,
       'User-Agent' => self::getUserAgent(),
+      'Content-Type' => 'application/json',
     ];
 
     $this->logger = new Log\NullLogger();

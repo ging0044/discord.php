@@ -38,9 +38,9 @@ class Client {
   }
 
   public function send(
-    Channel $channel,
+    string $channel,
     string $message,
-    Embed $embed
+    ?Embed $embed = null
   ): Promise {
     return \Amp\call(function () use ($channel, $message, $embed) {
       $data = [
@@ -50,7 +50,7 @@ class Client {
         $data['embed'] = $embed;
       }
       return yield $this->restClient->post(
-        Endpoint::CHANNEL_MESSAGES($channel->id),
+        Endpoint::CHANNEL_MESSAGES($channel),
         $data
       );
     });

@@ -49,4 +49,9 @@ class Client {
       );
     });
   }
+
+  public function setLogger(\Psr\Log\LoggerInterface $logger): void {
+    $this->gatewayClient->setLogger($logger);
+    $this->restClient->setLogger($logger);
+  }
 }

@@ -43,4 +43,11 @@ class Client {
   public function getEventStream(): EventStream {
     return $this->eventStream;
   }
+
+  public function setLogger(\Psr\Log\LoggerInterface $logger): void {
+    $this->eventStream->setLogger($logger);
+    $this->heartbeat->setLogger($logger);
+    $this->identifier->setLogger($logger);
+    $this->connection->setLogger($logger);
+  }
 }

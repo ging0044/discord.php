@@ -1,7 +1,8 @@
 <?php
 namespace p7g\Discord;
 
-use Rest\Endpoint;
+use Amp\Promise;
+use p7g\Discord\Rest\Endpoint;
 use Common\Channel;
 use Common\Embed;
 
@@ -12,7 +13,10 @@ class Client {
   /** @var Gateway\Client $gatewayClient */
   private $gatewayClient;
 
-  public function __construct(Token\IToken $token, ?array $options = []) {
+  public function __construct(
+    Token\TokenInterface $token,
+    ?array $options = []
+  ) {
     $this->restClient = new Rest\Client($token);
     $this->gatewayClient = new Gateway\Client();
   }

@@ -1,5 +1,6 @@
 {
     "name": "p7g/discord.php",
+    "description": "Asynchronous Discord client for PHP",
     "homepage": "https://github.com/p7g/discord.php",
     "autoload": {
         "psr-4": {

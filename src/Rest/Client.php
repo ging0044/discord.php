@@ -36,7 +36,8 @@ class Client implements Log\LoggerAwareInterface {
       $composer = json_decode(
         file_get_contents(__DIR__ . '/../../composer.json')
       );
-      self::$discordphpVersion = $composer->version;
+      self::$discordphpVersion = '0.0.1'; // FIXME: composer says not to put
+      // version, but i need it somehow...
       self::$discordphpHomepage = $composer->homepage;
     }
     $url = self::$discordphpHomepage;

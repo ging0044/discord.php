@@ -1,6 +1,5 @@
 {
     "homepage": "https://github.com/p7g/discord.php",
-    "version": "0.0.1",
     "autoload": {
         "psr-4": {
             "p7g\\Discord\\": "src"

@@ -75,9 +75,10 @@ class Client implements Log\LoggerAwareInterface {
       ->withHeaders($this->headers)
       ->withMethod($method);
 
+    $body = null;
     if ($data !== null) {
       $body = json_encode($data);
-      $request->withBody($body);
+      $request = $request->withBody($body);
     }
 
     $rand = \random_int(0, PHP_INT_MAX);

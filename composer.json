@@ -1,4 +1,5 @@
 {
+    "name": "p7g/discord.php",
     "homepage": "https://github.com/p7g/discord.php",
     "autoload": {
         "psr-4": {

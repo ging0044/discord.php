@@ -23,8 +23,10 @@ class Client {
 
   public function start(array $identity) {
     $this->gatewayClient->setIdentity($identity);
-    $gateway = yield $this->restClient->get(Endpoint::GATEWAY_BOT);
-    $this->gatewayClient->start();
+    \Amp\Loop::run(function () {
+      $gateway = yield $this->restClient->get(Endpoint::GATEWAY_BOT);
+      $this->gatewayClient->start($gateway);
+    });
   }
 
   public function on(...$args) {

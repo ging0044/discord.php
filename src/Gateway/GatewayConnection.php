@@ -101,7 +101,7 @@ implements
 
       $this->logger->debug('Started');
       try {
-        while ($message = yield $this->receiveMessage() && $this->running) {
+        while ($this->running && $message = yield $this->receiveMessage()) {
           $this->emit($message->op, $message);
         }
       }

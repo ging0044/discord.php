@@ -1,9 +1,17 @@
 {
+    "homepage": "https://github.com/p7g/discord.php",
+    "version": "0.0.1",
     "autoload": {
         "psr-4": {
             "p7g\\Discord\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "p7g\\Discord\\Test\\": "test"
+        }
+    },
+    "minimum-stability": "dev",
     "require": {
         "amphp/amp": "^2.0",
         "amphp/artax": "^3.0",
@@ -18,6 +26,11 @@
     "require-dev": {
         "roave/security-advisories": "dev-master",
         "nunomaduro/collision": "^2.1",
-        "monolog/monolog": "^1.24"
+        "monolog/monolog": "^1.24",
+        "phpunit/phpunit": "^7.4",
+        "amphp/parallel": "^1.0",
+        "amphp/parallel-functions": "^0.1.3",
+        "amphp/websocket-server": "dev-master",
+        "amphp/http-server": "0.8.3"
     }
 }

@@ -5,15 +5,15 @@
     "autoload": {
         "psr-4": {
             "p7g\\Discord\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "p7g\\Discord\\Test\\": "test"
         },
         "files": [
             "src/Utility/cast.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "p7g\\Discord\\Test\\": "test"
+        }
     },
     "minimum-stability": "dev",
     "require": {

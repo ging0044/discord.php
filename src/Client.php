@@ -46,7 +46,11 @@ class Client {
     string $message,
     ?Embed $embed = null
   ): Promise {
-    $message = \str_replace((string) $this->token, '<redacted>', $message);
+    $message = \str_replace(
+      $this->token->getRawToken(),
+      '<redacted>',
+      $message
+    );
     return \Amp\call(function () use ($channel, $message, $embed) {
       $data = [
         'content' => $message,

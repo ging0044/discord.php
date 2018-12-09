@@ -22,6 +22,10 @@ final class BotToken implements TokenInterface, \JsonSerializable {
     return "Bot {$this->token}";
   }
 
+  public function getRawToken(): string {
+    return $this->token;
+  }
+
   public function jsonSerialize(): string {
     return $this->__toString();
   }

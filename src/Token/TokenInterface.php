@@ -1,7 +1,7 @@
 <?php
 namespace p7g\discord\Token;
 
-interface TokenInterface {
+interface TokenInterface extends \JsonSerializable {
   /**
    * Make an instance of the token from a string
    *
@@ -16,4 +16,6 @@ interface TokenInterface {
    * prefix
    */
   public function __toString(): string;
+
+  public function getRawToken(): string;
 }

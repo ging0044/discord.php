@@ -110,6 +110,7 @@ implements
           "Websocket connection closed with code {$e->getCode()}: "
           . $e->getMessage()
         );
+        $this->reconnect();
       }
     });
   }

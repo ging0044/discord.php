@@ -76,7 +76,7 @@ implements
     try {
       $this->connection = yield $this->connector->connect();
     }
-    catch (\Exception $e) { // TODO: keep trying
+    catch (\Throwable $e) { // TODO: keep trying
       $this->logger->emergency('Failed to get connection', ['e' => $e]);
       $this->emit('error', $e);
     }
@@ -102,7 +102,10 @@ implements
       $this->logger->debug('Started');
       try {
         while ($this->running && $message = yield $this->receiveMessage()) {
-          $this->emit($message->op, $message);
+          if ($message !== null) {
+            $this->emit($message->op, $message);
+          }
+          $message = null;
         }
       }
       catch (Websocket\ClosedException $e) {
@@ -121,7 +124,13 @@ implements
 
   private function receiveMessage(): Promise {
     return Amp\call(function () {
-      $message = yield $this->connection->receive();
+      try {
+        $message = yield $this->connection->receive();
+      }
+      catch (\Amp\Websocket\ClosedConnection $e) {
+        $this->emit('disconnect', $e->getCode());
+        return;
+      }
       $body = yield $message->buffer();
 
       $this->logger->debug("Received: $body");

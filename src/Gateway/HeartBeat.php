@@ -58,6 +58,11 @@ final class Heartbeat implements Log\LoggerAwareInterface {
         $this->sequence = $message->s;
       }
     })->bindTo($this, self::class));
+    $this->connection->on('disconnect', function ($code) {
+      if ($code >= 1000 && $code < 2000) {
+        $this->reset();
+      }
+    });
   }
 
   public function start(): void {

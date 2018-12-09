@@ -13,10 +13,14 @@ class Client {
   /** @var Gateway\Client $gatewayClient */
   private $gatewayClient;
 
+  /** @var Token\TokenInterface $token */
+  private $token;
+
   public function __construct(
     Token\TokenInterface $token,
     ?array $options = []
   ) {
+    $this->token = $token;
     $this->restClient = new Rest\Client($token);
     $this->gatewayClient = new Gateway\Client();
   }
@@ -42,6 +46,7 @@ class Client {
     string $message,
     ?Embed $embed = null
   ): Promise {
+    $message = \str_replace((string) $this->token, '<redacted>', $message);
     return \Amp\call(function () use ($channel, $message, $embed) {
       $data = [
         'content' => $message,

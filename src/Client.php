@@ -3,8 +3,8 @@ namespace p7g\Discord;
 
 use Amp\Promise;
 use p7g\Discord\Rest\Endpoint;
-use Common\Channel;
-use Common\Embed;
+use p7g\Discord\Common\Channel;
+use p7g\Discord\Common\Embed;
 
 class Client {
   /** @var Rest\Client $restClient */

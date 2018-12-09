@@ -66,7 +66,7 @@ final class Heartbeat implements Log\LoggerAwareInterface {
   }
 
   public function start(): void {
-    $this->logger->debug("Starting heartbeat at interval {$this->interval}");
+    $this->logger->debug('Starting heartbeat', ['interval' => $this->interval]);
     $this->beat = \Amp\Loop::repeat($this->interval, $this->doHeartbeat);
     \Amp\Loop::unreference($this->beat);
   }
@@ -81,7 +81,10 @@ final class Heartbeat implements Log\LoggerAwareInterface {
 
   private function handleHello($message): void {
     $this->interval = $message->d->heartbeat_interval;
-    $this->logger->debug("Got heartbeat interval of {$this->interval}");
+    $this->logger->debug(
+      'Got heartbeat interval',
+      ['interval' => $this->interval]
+    );
     $this->start();
   }
 
@@ -89,7 +92,7 @@ final class Heartbeat implements Log\LoggerAwareInterface {
     $this->lastAck = \microtime(true);
     $this->acknowledged = true;
     $latency = round(($this->lastAck - $this->lastBeat) * 1000, 2);
-    $this->logger->debug("Received heartbeat ack, latency {$latency}ms");
+    $this->logger->debug('Received heartbeat ack', compact('latency'));
   }
 
   private function reset(): void {
@@ -100,9 +103,12 @@ final class Heartbeat implements Log\LoggerAwareInterface {
   private function doHeartbeat(): void {
     if (!$this->acknowledged) {
       $this->logger->warning(
-        "No ack sent for heartbeat at {$this->lastBeat}, "
-        . "last ack at {$this->lastAck}"
-      ); // TODO: handle properly
+        'No ack sent for heartbeat',
+        [
+          'lastBeat' => $this->lastBeat,
+          'lastAck' => $this->lastAck,
+        ]
+      );
 
       $this->reset();
       $this->connection->disconnect(

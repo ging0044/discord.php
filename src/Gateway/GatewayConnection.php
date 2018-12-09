@@ -59,13 +59,16 @@ implements
       $this->reconnect();
     }
     else {
-      $this->logger->emergency('Got invalid session, unable to resume');
+      $this->logger->emergency(
+        'Got;invalid session, unable to resume',
+        $message
+      );
       $this->emit('error', new \Exception('Unable to resume session'));
     }
   }
 
   public function send($data) {
-    $this->logger->debug('Sent: ' . json_encode($data));
+    $this->logger->debug('Sent packet', $data);
 
     $encoded = json_encode($data);
     return $this->connection->send($encoded);
@@ -77,7 +80,15 @@ implements
       $this->connection = yield $this->connector->connect();
     }
     catch (\Throwable $e) { // TODO: keep trying
-      $this->logger->emergency('Failed to get connection', ['e' => $e]);
+      $this->logger->emergency(
+        'Failed to get connection',
+        [
+          'code' => $e->getCode(),
+          'message' => $e->getMessage(),
+          'file' => $e->getFile(),
+          'line' => $e->getLine(),
+        ]
+      );
       $this->emit('error', $e);
     }
   }
@@ -110,8 +121,13 @@ implements
       }
       catch (Websocket\ClosedException $e) {
         $this->logger->warning(
-          "Websocket connection closed with code {$e->getCode()}: "
-          . $e->getMessage()
+          'Websocket connection closed',
+          [
+            'code' => $e->getCode(),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+          ]
         );
         $this->reconnect();
       }
@@ -132,10 +148,11 @@ implements
         return;
       }
       $body = yield $message->buffer();
+      $decoded = \json_decode($body);
 
-      $this->logger->debug("Received: $body");
+      $this->logger->debug('Received packet', $decoded);
 
-      return \json_decode($body);
+      return $decoded;
     });
   }
 }

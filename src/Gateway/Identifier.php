@@ -63,7 +63,10 @@ final class Identifier implements Log\LoggerAwareInterface {
 
   private function handleReady($data): void {
     $this->sessionId = $data->session_id;
-    $this->logger->debug("Got new session ID: {$this->sessionId}");
+    $this->logger->debug(
+      'Got new session ID',
+      ['sessionId' => $this->sessionId]
+    );
   }
 
   private function handleInvalidSession(): void {
@@ -74,7 +77,8 @@ final class Identifier implements Log\LoggerAwareInterface {
   private function resume(): void {
     $data = $this->identity; // TODO: make this be whatever
     $this->logger->debug(
-      'Attempting to resume the session: ' . json_encode($data)
+      'Attempting to resume the session',
+      $data
     );
     $this->connection->send([
       'op' => OpCode::RESUME,
@@ -83,7 +87,7 @@ final class Identifier implements Log\LoggerAwareInterface {
   }
 
   private function identify(): void { // TODO: after identify, switch to resume
-    $this->logger->debug('Identifying as ' . json_encode($this->identity));
+    $this->logger->debug('Identifying', ['identity' => $this->identity]);
     $this->connection->send([
       'op' => OpCode::IDENTIFY,
       'd' => $this->identity,

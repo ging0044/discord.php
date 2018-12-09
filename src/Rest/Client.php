@@ -83,16 +83,29 @@ class Client implements Log\LoggerAwareInterface {
 
     $rand = \random_int(0, PHP_INT_MAX);
     $this->logger->debug(
-      "Making $method request ($rand) to $url with body: $body"
+      'Making HTTP request',
+      [
+        'method' => $method,
+        'id' => $rand,
+        'url' => $url,
+        'body' => $data,
+      ]
     );
 
     return \Amp\call(function () use ($request, $rand) {
       $response = yield $this->client->request($request);
       $body = yield $response->getBody();
+      $decoded = \json_decode($body);
 
-      $this->logger->debug("Received result ($rand): $body");
+      $this->logger->debug(
+        'Received HTTP result',
+        [
+          'id' => $rand,
+          'body' => $decoded,
+        ]
+      );
 
-      return \json_decode($body);
+      return $decoded;
     });
   }
 

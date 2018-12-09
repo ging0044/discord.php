@@ -1,7 +1,7 @@
 <?php
 namespace p7g\Discord\Token;
 
-final class BotToken implements TokenInterface, \JsonSerializable {
+final class BotToken implements TokenInterface {
   private $token;
 
   /**

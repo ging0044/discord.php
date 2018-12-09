@@ -1,5 +1,5 @@
 <?php
-namespace p7g\Discord\Common\Message;
+namespace p7g\Discord\Common\Message\Activity;
 
 final class Type {
   public const JOIN = 1;

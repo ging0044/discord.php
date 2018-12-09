@@ -109,7 +109,7 @@ implements
         }
       }
       catch (Websocket\ClosedException $e) {
-        $this->logger->notice(
+        $this->logger->warning(
           "Websocket connection closed with code {$e->getCode()}: "
           . $e->getMessage()
         );

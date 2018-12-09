@@ -83,7 +83,7 @@ class Client implements Log\LoggerAwareInterface {
 
     $rand = \random_int(0, PHP_INT_MAX);
     $this->logger->debug(
-      "Making $method request ($rand) to (url) with body: $body"
+      "Making $method request ($rand) to $url with body: $body"
     );
 
     return \Amp\call(function () use ($request, $rand) {

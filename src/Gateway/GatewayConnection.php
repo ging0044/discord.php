@@ -68,7 +68,7 @@ implements
   }
 
   public function send($data) {
-    $this->logger->debug('Sent packet', $data);
+    $this->logger->debug('Sent packet', compact('data'));
 
     $encoded = json_encode($data);
     return $this->connection->send($encoded);
@@ -150,7 +150,7 @@ implements
       $body = yield $message->buffer();
       $decoded = \json_decode($body);
 
-      $this->logger->debug('Received packet', $decoded);
+      $this->logger->debug('Received packet', compact('decoded'));
 
       return $decoded;
     });

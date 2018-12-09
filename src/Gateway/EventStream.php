@@ -19,7 +19,7 @@ class EventStream implements Log\LoggerAwareInterface, EventEmitterInterface {
   }
 
   private function readEvent($message): void {
-    $this->logger->debug('Received event', $message);
+    $this->logger->debug('Received event', compact('message'));
     $event = $message->t;
     $data = $message->d;
     $this->emit($event, $data);

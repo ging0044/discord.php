@@ -19,7 +19,7 @@ final class Endpoint {
     string $channel,
     string $message
   ): string {
-    return self::CHANNEL_MESSAGES($cId) . "/$mId";
+    return self::CHANNEL_MESSAGES($channel) . "/$message";
   }
 
   public static function REACTION(

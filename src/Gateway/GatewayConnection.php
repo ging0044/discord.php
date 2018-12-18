@@ -111,25 +111,11 @@ implements
       yield Amp\call(\Closure::fromCallable([$this, 'connect']));
 
       $this->logger->debug('Started');
-      try {
-        while ($this->running && $message = yield $this->receiveMessage()) {
-          if ($message !== null) {
-            $this->emit($message->op, $message);
-          }
-          $message = null;
+      while ($this->running && $message = yield $this->receiveMessage()) {
+        if ($message !== null) {
+          $this->emit($message->op, $message);
         }
-      }
-      catch (Websocket\ClosedException $e) {
-        $this->logger->warning(
-          'Websocket connection closed',
-          [
-            'code' => $e->getCode(),
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-          ]
-        );
-        $this->reconnect();
+        $message = null;
       }
     });
   }
@@ -143,8 +129,19 @@ implements
       try {
         $message = yield $this->connection->receive();
       }
-      catch (\Amp\Websocket\ClosedConnection $e) {
+      catch (Websocket\ClosedException $e) {
+        $this->logger->warning(
+          'Websocket connection closed',
+          [
+            'code' => $e->getCode(),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+          ]
+        );
+        $this->running = false;
         $this->emit('disconnect', $e->getCode());
+        $this->reconnect();
         return;
       }
       $body = yield $message->buffer();

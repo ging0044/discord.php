@@ -129,7 +129,6 @@ implements
         $message = yield $this->connection->receive();
       }
       catch (Websocket\ClosedException $e) {
-<<<<<<< HEAD
         $this->logger->warning(
           'Websocket connection closed',
           [
@@ -140,8 +139,6 @@ implements
           ]
         );
         $this->running = false;
-=======
->>>>>>> potentially fixed close with code 1006
         $this->emit('disconnect', $e->getCode());
         $this->reconnect();
         return;

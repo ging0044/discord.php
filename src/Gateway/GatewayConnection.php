@@ -57,8 +57,7 @@ implements
     if ($message->d) {
       yield new Amp\Delayed(\random_int(1000, 5000));
       $this->reconnect();
-    }
-    else {
+    } else {
       $this->logger->emergency(
         'Got;invalid session, unable to resume',
         $message
@@ -130,6 +129,7 @@ implements
         $message = yield $this->connection->receive();
       }
       catch (Websocket\ClosedException $e) {
+<<<<<<< HEAD
         $this->logger->warning(
           'Websocket connection closed',
           [
@@ -140,6 +140,8 @@ implements
           ]
         );
         $this->running = false;
+=======
+>>>>>>> potentially fixed close with code 1006
         $this->emit('disconnect', $e->getCode());
         $this->reconnect();
         return;
